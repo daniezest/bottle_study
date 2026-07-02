@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Engineering Taste — A Bottle Walkthrough</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --panel: #161925;
+    --panel2: #1d2130;
+    --text: #dfe3ee;
+    --muted: #8b91a7;
+    --accent: #7aa2f7;
+    --good: #7fd97f;
+    --bad: #f0a05a;
+    --code-bg: #0b0d13;
+    --border: #2a2f42;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 40px 24px 100px; }
+  header { margin-bottom: 36px; }
+  header h1 { font-size: 1.7rem; margin: 0 0 6px; }
+  header p { color: var(--muted); margin: 0; font-size: 0.95rem; }
+  nav.toc {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 36px;
+  }
+  nav.toc h2 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 0 0 10px; }
+  nav.toc ol { margin: 0; padding-left: 20px; columns: 2; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  section.topic {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-bottom: 28px;
+    scroll-margin-top: 20px;
+  }
+  section.topic h2 { margin-top: 0; font-size: 1.25rem; }
+  .lesson {
+    font-size: 1.02rem;
+    padding: 10px 14px;
+    background: var(--panel2);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    margin: 12px 0 18px;
+  }
+  .lesson b { color: var(--accent); }
+  .refs { margin: 10px 0 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .ref-link {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+    font-size: 0.82rem;
+    color: var(--accent);
+    background: var(--panel2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 10px;
+    text-decoration: none;
+  }
+  .ref-link:hover { border-color: var(--accent); }
+  .ref-link .icon { opacity: .7; margin-right: 4px; }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 0.84rem;
+    margin: 0 0 16px;
+  }
+  code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  h3.label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin: 18px 0 6px; }
+  h3.label.good { color: var(--good); }
+  h3.label.bad { color: var(--bad); }
+  .ask {
+    margin-top: 16px;
+    font-style: italic;
+    color: var(--text);
+    background: var(--panel2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    border-left: 3px solid var(--muted);
+  }
+  ol.rank li { margin-bottom: 12px; }
+  .note {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  footer { color: var(--muted); font-size: 0.8rem; margin-top: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Engineering Taste — A Bottle Walkthrough</h1>
+  <p>Click any <span style="color:var(--accent)">bottle.py:LINE</span> chip to jump straight to that code in VS&nbsp;Code. Links assume this file lives next to <code>bottle.py</code> and that VS Code is installed with its URI handler registered.</p>
+</header>
+
+<nav class="toc">
+  <h2>Topics</h2>
+  <ol>
+    <li><a href="#t1">Routing &amp; dispatch</a></li>
+    <li><a href="#t2">The decorator-based API</a></li>
+    <li><a href="#t3">Request/response object design</a></li>
+    <li><a href="#t4">Plugin architecture</a></li>
+    <li><a href="#t5">The single-file decision</a></li>
+    <li><a href="#t6">Error handling &amp; failure modes</a></li>
+    <li><a href="#t7">Where Bottle says no</a></li>
+    <li><a href="#rank">Highest-leverage takeaways</a></li>
+  </ol>
+</nav>
+
+<section class="topic" id="t1">
+  <h2>1. Routing &amp; Dispatch</h2>
+  <div class="lesson"><b>Lesson:</b> When a system has a common fast case and a rare general case, give each its own code path instead of forcing everything through one uniform (and therefore slower) mechanism.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:357:1"><span class="icon">▸</span>bottle.py:357-360 (static add)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:430:1"><span class="icon">▸</span>bottle.py:430-446 (match)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:405:1"><span class="icon">▸</span>bottle.py:405-415 (_compile)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:278:1"><span class="icon">▸</span>bottle.py:278 (group limit)</a>
+  </div>
+
+  <pre><code>if is_static and not self.strict_order:
+    self.static.setdefault(method, {})
+    self.static[method][self.build(rule)] = (target, None)
+    return</code></pre>
+  <pre><code>if method in self.static and path in self.static[method]:
+    target, getargs = self.static[method][path]
+    return target, getargs(path) if getargs else {}
+elif method in self.dyna_regexes:
+    for combined, rules in self.dyna_regexes[method]:
+        ...</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p>Most routes (<code>/about</code>, <code>/api/users</code>) have no wildcards. Bottle detects this at registration time and stores them in a plain dict — matching is a hash lookup, O(1) regardless of route count. Only genuinely dynamic routes pay for regex matching, and even those are batched into combined patterns of up to 99 alternatives (the hard CPython regex-group ceiling, documented right in the code) using <code>match.lastindex</code> to identify which one fired. The naive version — a linear scan of individually compiled regexes for every request — would degrade as routes grow, even for apps that are mostly static.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>Two code paths to debug instead of one. The hand-rolled tokenizer regex parsing <code>&lt;name:filter:config&gt;</code> syntax is dense and fragile compared to a real parser — functional, but not something you'd modify without a test suite next to it.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Is there a hot/common case buried inside a general-case code path that could be short-circuited instead?</div>
+</section>
+
+<section class="topic" id="t2">
+  <h2>2. The Decorator-Based API</h2>
+  <div class="lesson"><b>Lesson:</b> A registration step and a behavior-modification step are different concerns — keep the decorator that registers something dumb, and defer anything that changes behavior to a later, separate stage.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:883:1"><span class="icon">▸</span>bottle.py:883-896 (route decorator)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:497:1"><span class="icon">▸</span>bottle.py:497-501 (Route.call)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
+  </div>
+
+  <pre><code>def decorator(callback):
+    if isinstance(callback, str):
+        callback = load(callback)
+    for rule in makelist(path) or yieldroutes(callback):
+        for verb in makelist(method):
+            verb = verb.upper()
+            route = Route(self, rule, verb, callback, ...)
+            self.add_route(route)
+    return callback          # &lt;-- unmodified
+return decorator(callback) if callback else decorator</code></pre>
+  <pre><code>@cached_property
+def call(self):
+    """ The route callback with all plugins applied... created on demand
+        and then cached to speed up subsequent requests."""
+    return self._make_callback()</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p><code>@app.route(...)</code> returns the exact function object you defined — no wrapping, no identity change. All behavior-changing work (JSON serialization, template rendering, auth plugins) happens later, lazily, the first time <code>route.call</code> is accessed, and the composed result is cached so it isn't rebuilt per request. A decorator that wraps immediately would force you to know the full plugin chain at decoration time, before every plugin is necessarily installed, and would make the original callback unrecoverable for introspection.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>Because the decorator does almost nothing, you can't tell what a route actually does just by reading its definition — you need to separately know which plugins are installed app-wide and per-route (<code>apply=</code>/<code>skip=</code>). Discoverability is traded for composability.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Does this decorator/registration step do only registration, or has behavior-changing logic crept in — and would deferring it make the system more composable?</div>
+</section>
+
+<section class="topic" id="t3">
+  <h2>3. Request/Response Object Design</h2>
+  <div class="lesson"><b>Lesson:</b> You can give callers a variable that feels like a plain global without cross-request corruption, by backing it with thread-local storage plus an explicit per-request reset.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1866:1"><span class="icon">▸</span>bottle.py:1866-1891 (_local_property, LocalRequest)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:948:1"><span class="icon">▸</span>bottle.py:948-949 (bind on dispatch)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:168:1"><span class="icon">▸</span>bottle.py:168-183 (DictProperty)</a>
+  </div>
+
+  <pre><code>def _local_property():
+    ls = threading.local()
+    def fget(_):
+        try: return ls.var
+        except AttributeError:
+            raise RuntimeError("Request context not initialized.")
+    def fset(_, value): ls.var = value
+    return property(fget, fset, fdel, 'Thread-local property')
+
+class LocalRequest(BaseRequest):
+    bind = BaseRequest.__init__
+    environ = _local_property()</code></pre>
+  <pre><code>request.bind(environ)     # inside Bottle._handle, once per incoming request
+response.bind()</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p>Handlers just write <code>from bottle import request</code> and call <code>request.GET</code> without threading a request object through every signature — it feels like a shared global. Underneath, <code>environ</code> is a <code>threading.local()</code> slot, so each concurrent thread sees its own value, and <code>_handle</code> re-binds it at the start of every request so nothing leaks between requests on the same thread. <code>DictProperty</code> layers lazy caching on top — <code>request.GET</code>/<code>.forms</code>/<code>.json</code> are parsed at most once per request, cached inside that same per-request <code>environ</code> dict, no separate invalidation logic needed. A single mutable module-level object shared across threads would let concurrent requests overwrite each other's data.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p><code>threading.local()</code> is tied to OS threads — it doesn't compose with asyncio tasks or greenlets that don't map 1:1 to threads (see Topic 7). It also makes <code>request</code>/<code>response</code> awkward to use outside an actual WSGI call: accessing <code>request.environ</code> before <code>bind()</code> raises <code>RuntimeError</code>, so unit-testing a handler directly requires manually binding a fake environ first.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Is this "global" actually a global, or context-scoped state wearing a global-looking API — and if the latter, what's the reset boundary?</div>
+</section>
+
+<section class="topic" id="t4">
+  <h2>4. Plugin Architecture</h2>
+  <div class="lesson"><b>Lesson:</b> Draw one explicit, narrow line between what's wired directly into the core dispatch loop and what's an opt-in, duck-typed extension point — don't let the two blur.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:628:1"><span class="icon">▸</span>bottle.py:628-631 (core plugins)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:778:1"><span class="icon">▸</span>bottle.py:778-788 (install)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1955:1"><span class="icon">▸</span>bottle.py:1955-1996 (JSONPlugin)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2019:1"><span class="icon">▸</span>bottle.py:~2020 (maintainer's TODO)</a>
+  </div>
+
+  <pre><code># Core plugins
+self.plugins = []
+self.install(JSONPlugin())
+self.install(TemplatePlugin())</code></pre>
+  <pre><code>def install(self, plugin):
+    if hasattr(plugin, 'setup'): plugin.setup(self)
+    if not callable(plugin) and not hasattr(plugin, 'apply'):
+        raise TypeError("Plugins must be callable or implement .apply()")
+    self.plugins.append(plugin)
+    self.reset()
+    return plugin</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p>The "auto-serialize a returned dict to JSON" behavior feels like core functionality, but it's an ordinary plugin (<code>JSONPlugin</code>) that just happens to be pre-installed in <code>__init__</code> — the comment <code># Core plugins</code> is the only thing marking the boundary, and it's fully uninstallable. Meanwhile <code>before_request</code>/<code>after_request</code> hooks are <em>not</em> plugins at all — they're hardwired calls inside <code>_handle</code> itself. This means the plugin mechanism only needs to support one shape of extension ("wraps a callback") via loose duck typing, rather than one API trying to handle both per-route wrapping and lifecycle events.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>Duck typing means no enforced contract — a plugin's <code>api = 2</code> attribute is a version marker nobody actually checks. Because <code>Route.call</code> is a <code>cached_property</code>, installing a plugin after routes exist requires <code>install()</code> to remember <code>self.reset()</code> to invalidate every route's cached callback — an easy gotcha, and the maintainer's own code has an unresolved <code># TODO: Find a better place</code> comment acknowledging the boundary isn't perfectly clean.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Where exactly does this system draw the line between "always runs" and "opt-in," and is that line enforced by a contract or just by convention?</div>
+</section>
+
+<section class="topic" id="t5">
+  <h2>5. The "Single File" Decision</h2>
+  <div class="lesson"><b>Lesson:</b> Single-file is legitimate architecture when portability is the actual product requirement — and it only stays readable if something acts like module boundaries even though the language isn't enforcing any.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:232:1"><span class="icon">▸</span>232 Routing</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:579:1"><span class="icon">▸</span>579 Application Object</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1109:1"><span class="icon">▸</span>1109 HTTP/WSGI Tools</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1947:1"><span class="icon">▸</span>1947 Plugins</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2063:1"><span class="icon">▸</span>2063 Common Utilities</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3366:1"><span class="icon">▸</span>3366 Server Adapter</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3950:1"><span class="icon">▸</span>3950 Template Adapters</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4442:1"><span class="icon">▸</span>4442 Constants and Globals</a>
+  </div>
+
+  <pre><code>"""
+Bottle is a fast and simple micro-framework for small web applications. It
+offers request dispatching (Routes) with URL parameter support, templates,
+a built-in HTTP Server and adapters for many third party WSGI/HTTP-server and
+template engines - all in a single file and with no dependencies other than the
+Python Standard Library.
+"""</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p>The stated goal — zero dependencies beyond the standard library, drop-in portability — is a real product requirement for a micro-framework, not laziness. 4,583 lines are organized into 15 banner-delimited sections ordered by dependency: helpers → routing → app object → request/response → plugins → utilities → server adapters → template adapters → globals. Each section reads top-to-bottom on the assumption that later sections may depend on earlier ones, never the reverse — a manual, convention-enforced stand-in for what package imports would give for free.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>There's no actual enforcement. Nothing stops code in a later section from reaching backward into an earlier section's internals — the ordering discipline is a convention the author maintains by hand. This only stays workable because Bottle is small, slow-moving, and single-maintainer; the same approach on a fast-moving multi-contributor project would rot without a linter enforcing dependency direction.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> If this were split into real modules, would the import graph be a clean DAG — and if the single-file version doesn't obviously map to one, is a boundary already being violated?</div>
+</section>
+
+<section class="topic" id="t6">
+  <h2>6. Error Handling &amp; Failure Modes</h2>
+  <div class="lesson"><b>Lesson:</b> Model errors as ordinary values flowing through your normal output path, not as an out-of-band control-flow exception special-cased at every call site.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:460:1"><span class="icon">▸</span>bottle.py:460-464 (404/405)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:960:1"><span class="icon">▸</span>bottle.py:960-980 (_handle exceptions)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1009:1"><span class="icon">▸</span>bottle.py:1009-1016 (_cast dispatch)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1076:1"><span class="icon">▸</span>bottle.py:1076-1089 (wsgi outer catch)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2714:1"><span class="icon">▸</span>bottle.py:2714 (abort)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:918:1"><span class="icon">▸</span>bottle.py:918-938 (error decorator)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4447:1"><span class="icon">▸</span>bottle.py:4447 (DEBUG global)</a>
+  </div>
+
+  <pre><code>if allowed:
+    raise HTTPError(405, "Method not allowed.", Allow=allow_header)
+raise HTTPError(404, "Not found: " + repr(path))</code></pre>
+  <pre><code>if isinstance(out, HTTPError):
+    out.apply(response)
+    out = self.error_handler.get(out.status_code, self.default_error_handler)(out)
+    return self._cast(out)
+if isinstance(out, HTTPResponse):
+    out.apply(response)
+    return self._cast(out.body)</code></pre>
+
+  <h3 class="label good">Why it's good</h3>
+  <p><code>HTTPError</code> is a subclass of <code>HTTPResponse</code>, itself a normal response object. A 404 raised deep inside <code>Router.match()</code> is caught as a control-flow exception but immediately handled as data — it flows into <code>_cast()</code>, the exact same function that turns a handler's returned string or dict into a WSGI response body. That's why <code>abort(404, "msg")</code> is a one-liner, and a custom 404 page is just a dict assignment (<code>error_handler[404] = callback</code>), not a special dispatch mechanism. Checking "did the router find a route?" with an explicit if/else at every call site would scatter this logic everywhere instead of centralizing it in one type-dispatch.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>Because uncaught real exceptions are also converted into <code>HTTPError(500, ...)</code> at the same layer, and there's a second outer catch-all in <code>wsgi()</code>, a genuine bug (a stray <code>NameError</code>) is silently swallowed into a 500 response unless <code>catchall</code> is turned off — the classic "caught everywhere, debugged nowhere" failure mode of broad <code>except Exception</code>. Correctness depends on the operator remembering to flip <code>debug()</code>/<code>catchall</code> per environment.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Is this error a value flowing through the normal path, or an exception needing a bespoke handler everywhere it might occur — and is a broad <code>except Exception</code> here hiding real bugs behind a generic response?</div>
+</section>
+
+<section class="topic" id="t7">
+  <h2>7. Where Bottle Says No</h2>
+  <div class="lesson"><b>Lesson:</b> Restraint means shipping a real default for the common case and pushing the uncommon case to an explicit, swappable adapter — instead of one abstraction trying to serve both.</div>
+
+  <div class="refs">
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4112:1"><span class="icon">▸</span>bottle.py:4112 (SimpleTemplate)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4083:1"><span class="icon">▸</span>bottle.py:4083 (Jinja2Template)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4040:1"><span class="icon">▸</span>bottle.py:4040 (MakoTemplate)</a>
+    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3688:1"><span class="icon">▸</span>bottle.py:3688 (AiohttpServer)</a>
+  </div>
+
+  <p class="note">No inline snippet here — the point is structural (what's built-in vs. adapter), not one quotable block. Click through to compare <code>SimpleTemplate</code> against <code>Jinja2Template</code>/<code>MakoTemplate</code> side by side.</p>
+
+  <h3 class="label good">Why it's good</h3>
+  <p>Bottle ships a genuinely usable minimal template engine (<code>SimpleTemplate</code>) so a project has zero external dependencies to render its default error page or basic views — but Jinja2/Mako/Cheetah exist as separate adapter classes you opt into, not as a unifying templating abstraction Bottle tries to own. Same pattern for concurrency: there's no <code>async def</code> handler support anywhere in the core request cycle; async servers like <code>aiohttp</code>/<code>gevent</code>/<code>eventlet</code> are wired in only as <code>ServerAdapter</code> subclasses that still present the same synchronous WSGI contract to your route functions. There's also no ORM and no CSRF protection anywhere in the file — both are "bring your own," full stop. A "bigger" framework would likely try to unify sync/async or unify templating engines; Bottle picked one real default and made everything else pluggable.</p>
+
+  <h3 class="label bad">The tradeoff</h3>
+  <p>Anyone who needs async handlers, an ORM, or CSRF protection gets no help from the framework at all — not a partial abstraction to build on, just nothing. That's the point of staying a micro-framework, but it means Bottle is a poor fit once a project's needs outgrow its narrow default, with no gradual on-ramp.</p>
+
+  <div class="ask"><b>Ask yourself in review:</b> Is this abstraction trying to unify two fundamentally different cases, and would a hard default plus an explicit adapter be more honest than a leaky unifying interface?</div>
+</section>
+
+<section class="topic" id="rank">
+  <h2>Highest-Leverage Takeaways</h2>
+  <p>Ranked by how often you'll see the pattern reused outside this codebase:</p>
+  <ol class="rank">
+    <li><b>Split the fast/common path from the slow/general path</b> instead of unifying them (Topic 1) — cache-then-fallback, static-then-dynamic, happy-path-then-exception-path all share this shape.</li>
+    <li><b>Decouple registration from behavior</b> (Topic 2) — decorators/registries that return the original object and defer wrapping to a later composed stage show up in DI containers, ORM model registries, test fixtures.</li>
+    <li><b>Model errors as values flowing through the normal path</b>, not a parallel control-flow system (Topic 6) — the same insight behind Result/Either types in other languages.</li>
+    <li><b>Context-scoped state that feels global but isn't</b> (Topic 3) — thread-locals, <code>contextvars</code>, React context, Flask's own request context all solve this the same way.</li>
+    <li><b>Restraint as "own the default, adapt the edge case"</b> (Topic 7) — the rarest to execute well, and the highest-value judgment call in review: does this new abstraction genuinely serve two needs, or quietly worsen the common case to accommodate a rare one?</li>
+  </ol>
+</section>
+
+<footer>Generated as a reading companion to <code>bottle.py</code> — line numbers verified against the file at time of writing.</footer>
+
+</div>
+</body>
+</html>
