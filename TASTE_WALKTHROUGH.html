@@ -129,10 +129,10 @@
   <div class="lesson"><b>Lesson:</b> When a system has a common fast case and a rare general case, give each its own code path instead of forcing everything through one uniform (and therefore slower) mechanism.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:357:1"><span class="icon">▸</span>bottle.py:357-360 (static add)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:430:1"><span class="icon">▸</span>bottle.py:430-446 (match)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:405:1"><span class="icon">▸</span>bottle.py:405-415 (_compile)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:278:1"><span class="icon">▸</span>bottle.py:278 (group limit)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:357:1"><span class="icon">▸</span>bottle.py:357-360 (static add)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:430:1"><span class="icon">▸</span>bottle.py:430-446 (match)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:405:1"><span class="icon">▸</span>bottle.py:405-415 (_compile)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:278:1"><span class="icon">▸</span>bottle.py:278 (group limit)</a>
   </div>
 
   <pre><code>if is_static and not self.strict_order:
@@ -160,9 +160,9 @@ elif method in self.dyna_regexes:
   <div class="lesson"><b>Lesson:</b> A registration step and a behavior-modification step are different concerns — keep the decorator that registers something dumb, and defer anything that changes behavior to a later, separate stage.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:883:1"><span class="icon">▸</span>bottle.py:883-896 (route decorator)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:497:1"><span class="icon">▸</span>bottle.py:497-501 (Route.call)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:883:1"><span class="icon">▸</span>bottle.py:883-896 (route decorator)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:497:1"><span class="icon">▸</span>bottle.py:497-501 (Route.call)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
   </div>
 
   <pre><code>def decorator(callback):
@@ -195,9 +195,9 @@ def call(self):
   <div class="lesson"><b>Lesson:</b> You can give callers a variable that feels like a plain global without cross-request corruption, by backing it with thread-local storage plus an explicit per-request reset.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1866:1"><span class="icon">▸</span>bottle.py:1866-1891 (_local_property, LocalRequest)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:948:1"><span class="icon">▸</span>bottle.py:948-949 (bind on dispatch)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:168:1"><span class="icon">▸</span>bottle.py:168-183 (DictProperty)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1866:1"><span class="icon">▸</span>bottle.py:1866-1891 (_local_property, LocalRequest)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:948:1"><span class="icon">▸</span>bottle.py:948-949 (bind on dispatch)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:168:1"><span class="icon">▸</span>bottle.py:168-183 (DictProperty)</a>
   </div>
 
   <pre><code>def _local_property():
@@ -229,11 +229,11 @@ response.bind()</code></pre>
   <div class="lesson"><b>Lesson:</b> Draw one explicit, narrow line between what's wired directly into the core dispatch loop and what's an opt-in, duck-typed extension point — don't let the two blur.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:628:1"><span class="icon">▸</span>bottle.py:628-631 (core plugins)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:778:1"><span class="icon">▸</span>bottle.py:778-788 (install)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1955:1"><span class="icon">▸</span>bottle.py:1955-1996 (JSONPlugin)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2019:1"><span class="icon">▸</span>bottle.py:~2020 (maintainer's TODO)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:628:1"><span class="icon">▸</span>bottle.py:628-631 (core plugins)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:778:1"><span class="icon">▸</span>bottle.py:778-788 (install)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:523:1"><span class="icon">▸</span>bottle.py:523-532 (_make_callback)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1955:1"><span class="icon">▸</span>bottle.py:1955-1996 (JSONPlugin)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:2019:1"><span class="icon">▸</span>bottle.py:~2020 (maintainer's TODO)</a>
   </div>
 
   <pre><code># Core plugins
@@ -262,15 +262,15 @@ self.install(TemplatePlugin())</code></pre>
   <div class="lesson"><b>Lesson:</b> Single-file is legitimate architecture when portability is the actual product requirement — and it only stays readable if something acts like module boundaries even though the language isn't enforcing any.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:232:1"><span class="icon">▸</span>232 Routing</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:579:1"><span class="icon">▸</span>579 Application Object</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1109:1"><span class="icon">▸</span>1109 HTTP/WSGI Tools</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1947:1"><span class="icon">▸</span>1947 Plugins</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2063:1"><span class="icon">▸</span>2063 Common Utilities</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3366:1"><span class="icon">▸</span>3366 Server Adapter</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3950:1"><span class="icon">▸</span>3950 Template Adapters</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4442:1"><span class="icon">▸</span>4442 Constants and Globals</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:232:1"><span class="icon">▸</span>232 Routing</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:579:1"><span class="icon">▸</span>579 Application Object</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1109:1"><span class="icon">▸</span>1109 HTTP/WSGI Tools</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1947:1"><span class="icon">▸</span>1947 Plugins</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:2063:1"><span class="icon">▸</span>2063 Common Utilities</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:3366:1"><span class="icon">▸</span>3366 Server Adapter</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:3950:1"><span class="icon">▸</span>3950 Template Adapters</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4442:1"><span class="icon">▸</span>4442 Constants and Globals</a>
   </div>
 
   <pre><code>"""
@@ -295,13 +295,13 @@ Python Standard Library.
   <div class="lesson"><b>Lesson:</b> Model errors as ordinary values flowing through your normal output path, not as an out-of-band control-flow exception special-cased at every call site.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:460:1"><span class="icon">▸</span>bottle.py:460-464 (404/405)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:960:1"><span class="icon">▸</span>bottle.py:960-980 (_handle exceptions)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1009:1"><span class="icon">▸</span>bottle.py:1009-1016 (_cast dispatch)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:1076:1"><span class="icon">▸</span>bottle.py:1076-1089 (wsgi outer catch)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:2714:1"><span class="icon">▸</span>bottle.py:2714 (abort)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:918:1"><span class="icon">▸</span>bottle.py:918-938 (error decorator)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4447:1"><span class="icon">▸</span>bottle.py:4447 (DEBUG global)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:460:1"><span class="icon">▸</span>bottle.py:460-464 (404/405)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:960:1"><span class="icon">▸</span>bottle.py:960-980 (_handle exceptions)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1009:1"><span class="icon">▸</span>bottle.py:1009-1016 (_cast dispatch)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:1076:1"><span class="icon">▸</span>bottle.py:1076-1089 (wsgi outer catch)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:2714:1"><span class="icon">▸</span>bottle.py:2714 (abort)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:918:1"><span class="icon">▸</span>bottle.py:918-938 (error decorator)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4447:1"><span class="icon">▸</span>bottle.py:4447 (DEBUG global)</a>
   </div>
 
   <pre><code>if allowed:
@@ -329,11 +329,11 @@ if isinstance(out, HTTPResponse):
   <div class="lesson"><b>Lesson:</b> Restraint means shipping a real default for the common case and pushing the uncommon case to an explicit, swappable adapter — instead of one abstraction trying to serve both.</div>
 
   <div class="refs">
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4112:1"><span class="icon">▸</span>bottle.py:4112 (SimpleTemplate)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4083:1"><span class="icon">▸</span>bottle.py:4083 (Jinja2Template)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:4040:1"><span class="icon">▸</span>bottle.py:4040 (MakoTemplate)</a>
-    <a class="ref-link" href="vscode://file/c:/Users/danle/Work/bottle/bottle.py:3688:1"><span class="icon">▸</span>bottle.py:3688 (AiohttpServer)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4:1"><span class="icon">▸</span>bottle.py:4-8 (docstring)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4112:1"><span class="icon">▸</span>bottle.py:4112 (SimpleTemplate)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4083:1"><span class="icon">▸</span>bottle.py:4083 (Jinja2Template)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:4040:1"><span class="icon">▸</span>bottle.py:4040 (MakoTemplate)</a>
+    <a class="ref-link" href="vscode://file//home/user/Work/bottle_study/bottle.py:3688:1"><span class="icon">▸</span>bottle.py:3688 (AiohttpServer)</a>
   </div>
 
   <p class="note">No inline snippet here — the point is structural (what's built-in vs. adapter), not one quotable block. Click through to compare <code>SimpleTemplate</code> against <code>Jinja2Template</code>/<code>MakoTemplate</code> side by side.</p>
